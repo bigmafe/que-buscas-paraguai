@@ -1,0 +1,8 @@
+
+name = "que-buscas-upload"
+main = "worker.js"
+compatibility_date = "2026-10-28"
+
+[[r2_buckets]]
+binding = "FOTOS"
+bucket_name = "que-buscas-fotos"
