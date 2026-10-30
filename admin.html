@@ -1,0 +1,872 @@
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1730">
+<title>Que Buscas Paraguai • Painel Pro V5</title>
+<style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#eaf1ff;background:#091427}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;background:#101f3a;border-bottom:1px solid #30405d}
+.brand{font-size:21px;font-weight:900}
+.brand span{color:#ff4058}
+.badge{background:#233c61;padding:7px 11px;border-radius:20px;font-size:12px}
+.layout{display:grid;grid-template-columns:225px 1fr;min-height:calc(100dvh - 65px)}
+aside{background:#0d1b33;padding:18px 12px;border-right:1px solid #30405d}
+nav button{width:100%;display:block;background:none;border:0;color:#c5d5ef;text-align:left;padding:13px;border-radius:10px;margin:3px 0}
+nav button.selected{background:#1b4e91;color:#fff}
+main{padding:25px;max-width:1200px;width:100%;margin:auto}
+h1{font-size:26px;margin:0 0 8px}
+h2{font-size:19px}
+p{color:#b3c4dd;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:22px 0}
+.card{background:#122541;border:1px solid #30486a;border-radius:16px;padding:18px}
+.number{font-size:32px;font-weight:800;margin:10px 0 0}
+.muted{font-size:13px;color:#a9bdd9}
+.panel{margin-top:18px}
+.action,.secondary,.danger,.success{border:0;border-radius:10px;padding:11px 14px;color:#fff;font-weight:600}
+.action{background:#1673e8}
+.secondary{background:#2a405f}
+.danger{background:#aa3045}
+.success{background:#168358}
+button:disabled{opacity:.5;cursor:wait}
+.hidden{display:none!important}
+#status{max-width:550px;margin:12vh auto;padding:24px;text-align:center}
+.error{color:#ff9fa9}
+.ok{color:#83e3b5}
+a{color:#9cc7ff}
+.items{display:grid;gap:12px;margin-top:16px}
+.item{border:1px solid #385070;background:#10213b;border-radius:13px;padding:16px;overflow-wrap:anywhere}
+.item h3{margin:0 0 8px;font-size:17px}
+.item p{margin:6px 0}
+.item .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.tag{display:inline-block;border-radius:20px;padding:4px 9px;background:#314563;font-size:12px}
+.tag.pending{background:#70501b;color:#ffe4a6}
+.tag.approved{background:#195d47;color:#c1ffe1}
+.tag.rejected{background:#713040;color:#ffd4dd}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.tabs button{border:1px solid #3a5577;background:#1a3152;color:#fff;padding:10px 13px;border-radius:9px}
+.tabs button.selected{background:#1769c5}
+.message{padding:12px;border-radius:10px;background:#263e5c;margin:15px 0}
+small{color:#a9bdd9}
+@media(max-width:800px){
+.layout{display:block}
+aside{padding:8px;overflow-x:auto;border-right:0;border-bottom:1px solid #30405d}
+nav{display:flex;gap:5px;width:max-content}
+nav button{width:auto;white-space:nowrap;padding:10px}
+main{padding:17px}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+header{padding:14px}
+}
+ .field{width:100%;background:#102441;color:white;border:1px solid #4a668c;border-radius:9px;padding:11px;margin:5px 0 12px}.edit-panel{padding:15px;background:#0c203d;border:1px solid #4877aa;border-radius:13px;margin:12px 0}.photos{display:flex;flex-wrap:wrap;gap:9px}.photos img{width:100px;height:100px;object-fit:cover;border-radius:9px}.photo-wrap{position:relative}.photo-wrap button{position:absolute;right:0;top:0;background:#b32c48;color:white;border:0;border-radius:50%}.manage-filter{display:flex;flex-wrap:wrap;gap:8px}.manage-filter>*{flex:1;min-width:130px} 
+/* Central de atendimento */
+.inbox-shell{display:grid;grid-template-columns:minmax(270px,350px) minmax(0,1fr);height:min(76dvh,760px);min-height:500px;background:#0e1d35;border:1px solid #344b6b;border-radius:18px;overflow:hidden}
+.inbox-sidebar{border-right:1px solid #344b6b;display:flex;flex-direction:column;min-height:0}
+.inbox-toolbar{padding:16px;border-bottom:1px solid #344b6b}.inbox-toolbar h3{margin:0 0 10px;font-size:17px}.inbox-search{width:100%;padding:11px 12px;background:#152b4a;color:#fff;border:1px solid #496181;border-radius:10px}
+.inbox-filters{display:flex;gap:6px;margin-top:10px}.inbox-filters button{background:#233957;color:#c9d9ef;border:0;border-radius:20px;padding:7px 11px;font-size:12px}.inbox-filters button.active{background:#1769c5;color:white}
+.inbox-list{overflow:auto;flex:1;min-height:0}.inbox-contact{display:flex;gap:11px;text-align:left;width:100%;padding:15px 12px;background:transparent;color:#eaf1ff;border:0;border-bottom:1px solid #263d5d}.inbox-contact:hover,.inbox-contact.active{background:#1b3659}.inbox-avatar{width:42px;height:42px;flex:none;border-radius:50%;background:#315887;display:grid;place-items:center;font-weight:800}.inbox-contact-info{min-width:0;flex:1}.inbox-contact-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.inbox-contact strong,.inbox-contact small,.inbox-contact .inbox-preview{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.inbox-contact small{font-size:11px;color:#9bb2d2}.inbox-preview{color:#b8c9df;font-size:12px;margin-top:5px}.inbox-empty{padding:22px;color:#b7c8de;text-align:center}
+.inbox-detail{min-width:0;min-height:0;display:flex;flex-direction:column}.inbox-detail-head{padding:14px 18px;border-bottom:1px solid #344b6b;background:#142844}.inbox-detail-head strong{font-size:17px}.inbox-detail-head p{margin:5px 0 0;font-size:12px}.inbox-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.inbox-meta span,.inbox-meta a{font-size:12px;background:#233f61;padding:7px 10px;border-radius:8px;color:#dcecff;text-decoration:none;overflow-wrap:anywhere}.inbox-messages{flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px;min-height:0}.inbox-bubble{max-width:min(83%,540px);padding:12px 14px;border-radius:14px;background:#233c5d;align-self:flex-start;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.45}.inbox-bubble.staff{background:#1263b8;align-self:flex-end}.inbox-bubble small{display:block;margin-top:6px;font-size:10px;color:#c6d9f0}.inbox-compose{display:flex;gap:9px;padding:13px;border-top:1px solid #344b6b;background:#142844}.inbox-compose textarea{flex:1;min-width:0;max-height:115px;resize:vertical;background:#10233e;color:white;border:1px solid #496181;border-radius:10px;padding:11px}.inbox-compose button{align-self:end}.inbox-back{display:none;background:none;color:#aaccff;border:0;padding:0 0 9px}.inbox-count{font-size:12px;color:#a9bdd9}.inbox-no-selection{margin:auto;text-align:center;color:#b3c4dd;padding:20px}
+@media(max-width:700px){.inbox-shell{display:block;height:calc(100dvh - 245px);min-height:430px}.inbox-sidebar,.inbox-detail{height:100%}.inbox-shell.thread-open .inbox-sidebar{display:none}.inbox-shell:not(.thread-open) .inbox-detail{display:none}.inbox-back{display:block}.inbox-messages{padding:13px}.inbox-bubble{max-width:92%}}
+/* Visão geral interativa */
+.stat-link{color:inherit;text-align:left;font:inherit;width:100%;cursor:pointer;transition:border-color .18s,transform .18s;position:relative}
+.stat-link::after{content:'↗';position:absolute;right:16px;top:14px;color:#9dcaff;font-size:20px}
+.stat-link:hover,.stat-link:focus-visible{border-color:#5fa9ff;transform:translateY(-2px);outline-offset:2px}
+.overview-inbox-head{display:flex;justify-content:space-between;align-items:start;gap:14px;flex-wrap:wrap}
+.overview-inbox-head h2{margin:0}.overview-inbox-head p{margin:8px 0 0}
+.overview-chat-count{display:flex;align-items:center;gap:14px;margin:18px 0;padding:15px;background:#102744;border:1px solid #365479;border-radius:12px}
+.overview-chat-count strong{font-size:32px;color:#fff}.overview-chat-count span{font-size:14px;color:#c4d6ed}
+.overview-recent{display:grid;gap:8px}.overview-recent-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#102744;border:1px solid #365479;color:#fff;border-radius:12px;padding:13px;min-width:0}
+.overview-recent-row:hover,.overview-recent-row:focus-visible{background:#19385c;border-color:#66a5e7}
+.overview-recent-avatar{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;background:#2b5585;font-weight:800}
+.overview-recent-main{min-width:0;flex:1;display:grid;gap:3px}.overview-recent-main strong,.overview-recent-main small,.overview-recent-main>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.overview-recent-main small{color:#adc4e1}.overview-recent-main>span{color:#d4e0f0;font-size:13px}
+.overview-recent-side{display:grid;justify-items:end;gap:6px;flex:none;font-size:12px}.overview-recent-side small{color:#b7cbe3}.overview-awaiting{background:#6a4c18;color:#ffe6a5;padding:4px 7px;border-radius:7px}
+@media(max-width:550px){.overview-inbox-head .action{width:100%}.overview-recent-side small{font-size:10px}}
+
+/* Que Buscas Pro V5 */
+:root{--qb-bg:#081321;--qb-panel:#11243b;--qb-border:#2b4665;--qb-accent:#4da3ff}
+body{background:radial-gradient(circle at 80% -10%,#173d63 0,transparent 38%),var(--qb-bg)}
+header{background:#0d1e33;border-bottom:1px solid var(--qb-border);position:sticky;top:0;z-index:12;backdrop-filter:blur(14px)}
+.brand{letter-spacing:-.5px}aside{background:#0b1b30}nav button{font-weight:600;transition:background .15s}nav button:hover,nav button:focus-visible{background:#203d5d}nav button.selected{background:#165393;box-shadow:inset 3px 0 #71b6ff}
+.card{border-color:var(--qb-border);box-shadow:0 8px 30px #020b1820}h1{letter-spacing:-.7px}.stat-link{min-height:132px;border-radius:17px;background:linear-gradient(145deg,#183653,#10233a);padding:20px}.stat-link .number{font-size:36px;letter-spacing:-1.5px}.stat-link .muted{padding-right:20px}.overview-inbox{border:1px solid #365c7d}.overview-recent-row{transition:background .15s,transform .15s}.overview-recent-row:hover{transform:translateX(2px)}
+.inbox-contact{position:relative;transition:background .15s}.inbox-contact.waiting{background:#182f48}.inbox-contact.waiting:before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:4px;background:#65b4ff}.inbox-last-preview{color:#c5d8ef;font-size:12px;margin-top:5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.qb-wait-badge{display:inline-flex;align-items:center;border-radius:999px;background:#315378;color:#d8edff;font-size:10px;padding:3px 7px;margin-top:6px;font-weight:700}.inbox-detail-head{background:#142c46}.inbox-messages{background:radial-gradient(circle at 30% 15%,#112b44,#0d1e32 65%)}.inbox-bubble{box-shadow:0 4px 14px #0002}.inbox-bubble.staff{background:#1765a9}
+.qb-shortcut{border:1px solid #365a7a;background:#173553;border-radius:10px;padding:9px 13px;color:#eaf5ff;cursor:pointer}.qb-shortcut:hover{background:#22507d}.qb-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #89caff;outline-offset:2px}
+@media(max-width:700px){main{padding:14px 12px 28px}#module>.panel{padding:12px}.inbox-shell{height:calc(100dvh - 245px);min-height:440px}.stats{gap:9px}.stat-link{padding:14px;min-height:118px}.stat-link .number{font-size:30px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="./index.html" aria-label="Voltar à página inicial" style="text-decoration:none;color:inherit"><span>Que</span> Buscas 🇵🇾</a>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><select id="adminLanguage" aria-label="Idioma" style="background:#203b61;color:white;border:1px solid #49688c;padding:8px;border-radius:9px"><option value="pt">🇧🇷 PT</option><option value="es">🇵🇾 ES</option><option value="en">🇺🇸 EN</option></select><div class="badge">Administração</div></div>
+</header>
+
+<section id="status" class="card">
+  <h1>Verificando acesso</h1>
+  <p id="statusMessage">Conectando à sua conta Google...</p>
+  <button id="login" class="action hidden">Entrar com Google</button>
+  <button id="logoutStatus" class="secondary hidden">Sair desta conta</button>
+</section>
+
+<div id="app" class="layout hidden">
+  <aside>
+    <nav id="menu">
+      <button class="selected" data-section="overview">📊 Visão geral</button>
+      <button data-section="approvals">⏳ Aprovar anúncios</button><button data-section="manage">🛡️ Gerenciar anúncios</button>
+      <button data-section="properties">🏠 Imóveis</button>
+      <button data-section="partners">🤝 Parceiros</button>
+      <button data-section="inbox">💬 Atendimentos</button>
+      <button data-section="team">👥 Equipe</button>
+      <button data-section="settings">⚙️ Configurações</button>
+    </nav>
+  </aside>
+
+  <main>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <div>
+        <h1 id="heading">Visão geral</h1>
+        <p id="intro">Bem-vindo ao painel administrativo.</p>
+      </div>
+      <button id="logout" class="secondary">Sair</button>
+    </div>
+
+    <div id="notice" class="message hidden"></div>
+
+    <section id="overview">
+      <div class="qb-tools" aria-label="Ações rápidas"><button type="button" class="qb-shortcut" data-dashboard="inbox">💬 Abrir atendimentos</button><button type="button" class="qb-shortcut" data-dashboard="approvals">⏳ Revisar pendências</button><button type="button" class="qb-shortcut" data-dashboard="manage">📦 Gerenciar anúncios</button></div><div class="stats">
+        <button type="button" class="card stat-link" data-dashboard="manage" aria-label="Abrir anúncios publicados">
+          <div class="muted">📦 Anúncios publicados</div>
+          <div class="number" id="statPublished">—</div>
+        </button>
+        <button type="button" class="card stat-link" data-dashboard="approvals" aria-label="Abrir aprovações pendentes">
+          <div class="muted">⏳ Aprovações pendentes</div>
+          <div class="number" id="statPending">—</div>
+        </button>
+        <button type="button" class="card stat-link" data-dashboard="partners" aria-label="Abrir parceiros">
+          <div class="muted">🤝 Parceiros aprovados</div>
+          <div class="number" id="statPartners">—</div>
+        </button>
+        <button type="button" class="card stat-link" data-dashboard="properties" aria-label="Abrir imóveis">
+          <div class="muted">🏠 Anúncios de imóveis</div>
+          <div class="number" id="statProperties">—</div>
+        </button>
+      </div>
+
+      <section class="overview-inbox card panel" id="overviewInbox" aria-label="Resumo de atendimentos">
+        <div class="overview-inbox-head"><div><h2>💬 Atendimento em tempo real</h2><p class="muted">Conversas recentes e clientes aguardando resposta.</p></div><button class="action" id="goInbox">Abrir central →</button></div>
+        <div class="overview-chat-count"><strong id="statAwaiting">—</strong><span>conversas aguardando resposta da equipe</span></div>
+        <div id="overviewRecent" class="overview-recent"><p class="muted">Carregando atendimentos...</p></div>
+      </section>
+
+      <div class="card panel">
+        <h2>Central de administração</h2>
+        <p>Analise novos parceiros, anúncios e alterações solicitadas pelos anunciantes. Nenhum anúncio pendente aparece publicamente antes da aprovação.</p>
+        <button class="action" id="goApprovals">Ver aprovações pendentes</button>
+        <button class="secondary" id="refreshAll">Atualizar dados</button>
+      </div>
+    </section>
+
+    <section id="module" class="hidden">
+      <div class="card panel">
+        <h2 id="moduleTitle"></h2>
+        <p id="moduleDescription"></p>
+        <div id="moduleContent"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js';
+import {
+  getAuth,GoogleAuthProvider,onAuthStateChanged,
+  signInWithPopup,signOut
+} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js';
+import {
+  getFirestore,doc,getDoc,collection,getDocs,limit,
+  updateDoc,deleteDoc,runTransaction,setDoc,serverTimestamp,addDoc,query,orderBy,onSnapshot
+} from 'https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js';
+
+const config={
+  apiKey:'AIzaSyCjZ7bXEYtNzgIaScbsLjRKt0fCjq_IyX8',
+  authDomain:'que-buscas-paraguai-1b5b1.firebaseapp.com',
+  projectId:'que-buscas-paraguai-1b5b1',
+  storageBucket:'que-buscas-paraguai-1b5b1.firebasestorage.app',
+  messagingSenderId:'833573657428',
+  appId:'1:833573657428:web:164d20836d2e05c7eb86c1'
+};
+
+const firebase=initializeApp(config);
+const auth=getAuth(firebase);
+const db=getFirestore(firebase);
+const $=id=>document.getElementById(id);
+
+
+// Tradução de textos estáticos renderizados; dados de anunciantes não são traduzidos.
+const QB_UI_DICTIONARY={"Terrenos": {"es": "Terrenos", "en": "Land"}, "Imóveis à venda": {"es": "Inmuebles en venta", "en": "Properties for sale"}, "Aluguéis": {"es": "Alquileres", "en": "Rentals"}, "Serviços": {"es": "Servicios", "en": "Services"}, "Restaurantes": {"es": "Restaurantes", "en": "Restaurants"}, "Comércios": {"es": "Comercios", "en": "Businesses"}, "Quero anunciar": {"es": "Quiero anunciar", "en": "Post a listing"}, "Buscar anúncios": {"es": "Buscar anuncios", "en": "Search listings"}, "Meus favoritos": {"es": "Mis favoritos", "en": "My favorites"}, "Minha loja": {"es": "Mi negocio", "en": "My business"}, "Meu perfil": {"es": "Mi perfil", "en": "My profile"}, "Detalhes": {"es": "Detalles", "en": "Details"}, "Entrar com Google": {"es": "Ingresar con Google", "en": "Sign in with Google"}, "Continuar com Google": {"es": "Continuar con Google", "en": "Continue with Google"}, "Cadastro de anunciante": {"es": "Registro de anunciante", "en": "Advertiser registration"}, "Cadastre seu negócio": {"es": "Registra tu negocio", "en": "Register your business"}, "Nome da loja ou anunciante *": {"es": "Nombre del negocio o anunciante *", "en": "Business or advertiser name *"}, "Categoria": {"es": "Categoría", "en": "Category"}, "Cidade no Paraguai": {"es": "Ciudad en Paraguay", "en": "City in Paraguay"}, "WhatsApp para contato": {"es": "WhatsApp de contacto", "en": "Contact WhatsApp"}, "Sobre o negócio": {"es": "Sobre el negocio", "en": "About the business"}, "Enviar cadastro para aprovação": {"es": "Enviar registro para aprobación", "en": "Submit registration for approval"}, "Abrir minha loja →": {"es": "Abrir mi negocio →", "en": "Open my business →"}, "Atualizar situação": {"es": "Actualizar estado", "en": "Refresh status"}, "Título do anúncio *": {"es": "Título del anuncio *", "en": "Listing title *"}, "Descrição": {"es": "Descripción", "en": "Description"}, "Fotos atuais": {"es": "Fotos actuales", "en": "Current photos"}, "Enviar anúncio para aprovação": {"es": "Enviar anuncio para aprobación", "en": "Submit listing for approval"}, "Meus anúncios enviados": {"es": "Mis anuncios enviados", "en": "My submitted listings"}, "Atualizar meus anúncios": {"es": "Actualizar mis anuncios", "en": "Refresh my listings"}, "Solicitar alteração": {"es": "Solicitar modificación", "en": "Request changes"}, "Nome": {"es": "Nombre", "en": "Name"}, "Enviar alterações para aprovação": {"es": "Enviar cambios para aprobación", "en": "Submit changes for approval"}, "Área do anunciante": {"es": "Área del anunciante", "en": "Advertiser area"}, "Sair da conta Google": {"es": "Salir de Google", "en": "Sign out of Google"}, "Central de Administração": {"es": "Centro de administración", "en": "Administration center"}, "Abrir painel administrativo →": {"es": "Abrir panel de administración →", "en": "Open admin panel →"}, "Voltar": {"es": "Volver", "en": "Back"}, "‹ Voltar": {"es": "‹ Volver", "en": "‹ Back"}, "Pesquisar": {"es": "Buscar", "en": "Search"}, "Todas as cidades": {"es": "Todas las ciudades", "en": "All cities"}, "Selecione a cidade": {"es": "Selecciona la ciudad", "en": "Select city"}, "Nenhum anúncio encontrado.": {"es": "No se encontraron anuncios.", "en": "No listings found."}, "Aprovado": {"es": "Aprobado", "en": "Approved"}, "Rejeitado": {"es": "Rechazado", "en": "Rejected"}, "Pendente": {"es": "Pendiente", "en": "Pending"}, "Pausado": {"es": "Pausado", "en": "Paused"}, "Publicado": {"es": "Publicado", "en": "Published"}, "Diário": {"es": "Diario", "en": "Daily"}, "Mensal": {"es": "Mensual", "en": "Monthly"}, "Diário e mensal": {"es": "Diario y mensual", "en": "Daily and monthly"}, "Moeda do anúncio": {"es": "Moneda del anuncio", "en": "Listing currency"}, "Preço": {"es": "Precio", "en": "Price"}, "Preço por diária": {"es": "Precio por día", "en": "Daily price"}, "Preço por mês": {"es": "Precio por mes", "en": "Monthly price"}, "Modalidade de aluguel": {"es": "Modalidad de alquiler", "en": "Rental type"}, "Tipo de aluguel": {"es": "Tipo de alquiler", "en": "Rental type"}, "Todos": {"es": "Todos", "en": "All"}, "Ver detalhes →": {"es": "Ver detalles →", "en": "View details →"}, "Tenho interesse": {"es": "Me interesa", "en": "I am interested"}, "Chat de teste": {"es": "Chat de prueba", "en": "Demo chat"}, "Enviar": {"es": "Enviar", "en": "Send"}, "Início": {"es": "Inicio", "en": "Home"}, "Buscar": {"es": "Buscar", "en": "Search"}, "Favoritos": {"es": "Favoritos", "en": "Favorites"}, "Anunciar": {"es": "Anunciar", "en": "Advertise"}, "Perfil": {"es": "Perfil", "en": "Profile"}, "Visão geral": {"es": "Resumen", "en": "Overview"}, "Aprovar anúncios": {"es": "Aprobar anuncios", "en": "Approve listings"}, "Gerenciar anúncios": {"es": "Gestionar anuncios", "en": "Manage listings"}, "Imóveis": {"es": "Inmuebles", "en": "Properties"}, "Parceiros": {"es": "Socios", "en": "Partners"}, "Atendimentos": {"es": "Atención al cliente", "en": "Support"}, "Equipe": {"es": "Equipo", "en": "Team"}, "Configurações": {"es": "Configuración", "en": "Settings"}, "Administração": {"es": "Administración", "en": "Administration"}, "Sair": {"es": "Salir", "en": "Sign out"}, "Anúncios publicados": {"es": "Anuncios publicados", "en": "Published listings"}, "Aprovações pendentes": {"es": "Aprobaciones pendientes", "en": "Pending approvals"}, "Parceiros aprovados": {"es": "Socios aprobados", "en": "Approved partners"}, "Anúncios de imóveis": {"es": "Anuncios inmobiliarios", "en": "Property listings"}, "Central de administração": {"es": "Centro de administración", "en": "Administration center"}, "Ver aprovações pendentes": {"es": "Ver aprobaciones pendientes", "en": "View pending approvals"}, "Atualizar dados": {"es": "Actualizar datos", "en": "Refresh data"}, "Anúncios": {"es": "Anuncios", "en": "Listings"}, "Alterações": {"es": "Cambios", "en": "Changes"}, "Aprovar": {"es": "Aprobar", "en": "Approve"}, "Rejeitar": {"es": "Rechazar", "en": "Reject"}, "Editar": {"es": "Editar", "en": "Edit"}, "Pausar": {"es": "Pausar", "en": "Pause"}, "Reativar": {"es": "Reactivar", "en": "Reactivate"}, "Excluir": {"es": "Eliminar", "en": "Delete"}, "Publicados": {"es": "Publicados", "en": "Published"}, "Pausados": {"es": "Pausados", "en": "Paused"}, "Pendentes": {"es": "Pendientes", "en": "Pending"}, "Rejeitados": {"es": "Rechazados", "en": "Rejected"}, "Buscar anúncio": {"es": "Buscar anuncio", "en": "Search listing"}, "Título": {"es": "Título", "en": "Title"}, "Moeda": {"es": "Moneda", "en": "Currency"}, "Aluguel": {"es": "Alquiler", "en": "Rental"}, "Ambos": {"es": "Ambos", "en": "Both"}, "Preço da diária (se ambos)": {"es": "Precio diario (si ambos)", "en": "Daily price (if both)"}, "Preço mensal (se ambos)": {"es": "Precio mensual (si ambos)", "en": "Monthly price (if both)"}, "Fotos atuais (toque em × para remover)": {"es": "Fotos actuales (pulsa × para quitar)", "en": "Current photos (tap × to remove)"}, "Adicionar fotos": {"es": "Agregar fotos", "en": "Add photos"}, "Salvar alterações": {"es": "Guardar cambios", "en": "Save changes"}, "Cancelar": {"es": "Cancelar", "en": "Cancel"}, "Parceiro": {"es": "Socio", "en": "Partner"}, "Telefone": {"es": "Teléfono", "en": "Phone"}, "Cidade": {"es": "Ciudad", "en": "City"}};
+function qbTranslate(root,locale){
+ if(locale==='pt'||!root)return;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+ let node;while((node=walker.nextNode())){
+  if(!node.parentElement||node.parentElement.closest('script,style,textarea,[data-user-content]'))continue;
+  const original=node.textContent,trimmed=original.trim();if(!trimmed)continue;
+  const bare=trimmed.replace(/^[^\p{L}\p{N}]+/u,'').trim();
+  const key=QB_UI_DICTIONARY[trimmed]?trimmed:QB_UI_DICTIONARY[bare]?bare:null;
+  if(key){const replacement=QB_UI_DICTIONARY[key][locale];if(replacement)node.textContent=original.replace(key,replacement)}
+ }
+ root.querySelectorAll('input[placeholder]').forEach(el=>{const p=el.getAttribute('placeholder');if(QB_UI_DICTIONARY[p]?.[locale])el.placeholder=QB_UI_DICTIONARY[p][locale]});
+}
+
+let adminLang=localStorage.getItem('qb_lang')||'pt';
+const adminLanguageSelect=document.getElementById('adminLanguage');
+adminLanguageSelect.value=adminLang;
+adminLanguageSelect.addEventListener('change',()=>{adminLang=adminLanguageSelect.value;localStorage.setItem('qb_lang',adminLang);window.location.reload()});
+let qbTranslating=false;
+const qbObserver=new MutationObserver(()=>{if(qbTranslating||adminLang==='pt')return;qbTranslating=true;qbObserver.disconnect();try{qbTranslate(document.body,adminLang)}finally{qbObserver.observe(document.body,{subtree:true,childList:true});qbTranslating=false}});
+qbObserver.observe(document.body,{subtree:true,childList:true});
+qbTranslate(document.body,adminLang);
+const OWNER_UID='Mm9YMuH1rdfHYWn3iil2k9Efcds2';
+const PERMISSIONS={ads:'Aprovar e gerenciar anúncios',companies:'Aprovar empresas e anunciantes',chat:'Responder atendimentos',users:'Consultar e bloquear usuários',reports:'Visualizar relatórios'};
+let currentUser=null;
+let currentSection='overview';
+let approvalTab='products';
+let records={stores:[],products:[],revisions:[]};
+let loading=false;
+let inboxUnsub=null,threadUnsub=null,inboxThreads=[],activeThread=null,threadMessages=[];
+let overviewMessageUnsubs=new Map(), overviewLastMessages=new Map();
+
+const titles={
+  overview:'Visão geral',
+  approvals:'Aprovar anúncios',
+  manage:'Gerenciar anúncios',
+  properties:'Imóveis',
+  partners:'Parceiros',
+  inbox:'Atendimentos',
+  team:'Equipe',
+  settings:'Configurações'
+};
+
+const propertyCategories=[
+  'aluguel','terreno','terrenos','imóvel',
+  'imoveis','imóveis','casa','apartamento'
+];
+
+function escapeHTML(value){
+  return String(value??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
+
+function statusLabel(status){
+  return {
+    pending:'Pendente',
+    approved:'Aprovado',
+    rejected:'Rejeitado',pending_review:'Aguardando nova aprovação'
+  }[status]||status||'Sem status';
+}
+
+function statusTag(status){
+  return '<span class="tag '+escapeHTML(status)+'">'+
+    escapeHTML(statusLabel(status))+'</span>';
+}
+
+function money(value){
+  if(typeof value!=='number')return escapeHTML(value??'Não informado');
+  return new Intl.NumberFormat('pt-BR',{
+    style:'currency',currency:'BRL'
+  }).format(value);
+}
+
+function isProperty(product){
+  const text=String(product.category||'').toLowerCase();
+  return propertyCategories.some(x=>text.includes(x));
+}
+
+function showStatus(msg,canLogin=false,canLogout=false){
+  $('app').classList.add('hidden');
+  $('status').classList.remove('hidden');
+  $('statusMessage').textContent=msg;
+  $('login').classList.toggle('hidden',!canLogin);
+  $('logoutStatus').classList.toggle('hidden',!canLogout);
+}
+
+function notify(message,error=false){
+  const el=$('notice');
+  el.textContent=message;
+  el.classList.remove('hidden');
+  el.style.color=error?'#ffb0bb':'#c6ffe2';
+}
+
+function clearNotice(){
+  $('notice').classList.add('hidden');
+}
+
+async function checkAdmin(){
+  if(!auth.currentUser)throw new Error('Sessão encerrada.');
+  const snap=await getDoc(doc(db,'users',auth.currentUser.uid));
+  const data=snap.exists()?snap.data():null;
+  if((auth.currentUser.uid!==OWNER_UID && data?.role!=='admin') || (auth.currentUser.uid!==OWNER_UID && data?.active!==true)){
+    throw new Error('Esta conta não tem permissão de administrador.');
+  }
+}
+
+onAuthStateChanged(auth,async user=>{
+  currentUser=user;
+  if(!user){
+    showStatus('Entre com sua conta Google autorizada para administrar a plataforma.',true);
+    return;
+  }
+  showStatus('Verificando permissões no Firestore...');
+  try{
+    await checkAdmin();
+    if(auth.currentUser?.uid!==user.uid)return;
+    const profile=await getDoc(doc(db,'users',user.uid));currentUserPermissions=profile.data()?.permissions||{};
+    $('status').classList.add('hidden');
+    $('app').classList.remove('hidden');
+    $('intro').textContent='Acesso autorizado: '+
+      (user.displayName||user.email||'Administrador');
+    await loadData();
+    if(canChat())startInbox();
+    else renderOverviewInbox();
+  }catch(e){
+    console.error(e);
+    showStatus('Não foi possível autorizar o acesso: '+e.message,false,true);
+  }
+});
+
+$('login').onclick=async()=>{
+  try{
+    await signInWithPopup(auth,new GoogleAuthProvider());
+  }catch(e){
+    showStatus('Falha no login Google: '+e.message,true);
+  }
+};
+
+$('logout').onclick=()=>signOut(auth);
+$('logoutStatus').onclick=()=>signOut(auth);
+
+async function loadData(){
+  if(loading)return;
+  loading=true;
+  clearNotice();
+  try{
+    await checkAdmin();
+    const [stores,products,revisions]=await Promise.all([
+      getDocs(collection(db,'stores')),
+      getDocs(collection(db,'products')),
+      getDocs(collection(db,'product_revisions'))
+    ]);
+    records.stores=stores.docs.map(x=>({id:x.id,...x.data()}));
+    records.products=products.docs.map(x=>({id:x.id,...x.data()}));
+    records.revisions=revisions.docs.map(x=>({id:x.id,...x.data()}));
+    updateStats();
+    renderSection();
+  }catch(e){
+    console.error(e);
+    notify('Erro ao carregar dados do Firestore: '+e.message,true);
+  }finally{
+    loading=false;
+  }
+}
+
+function updateStats(){
+  const approved=records.products.filter(x=>x.status==='approved');
+  const pending=
+    records.stores.filter(x=>x.status==='pending').length+
+    records.products.filter(x=>x.status==='pending').length+
+    records.revisions.filter(x=>x.status==='pending').length;
+
+  $('statPublished').textContent=approved.length;
+  $('statPending').textContent=pending;
+  $('statPartners').textContent=
+    records.stores.filter(x=>x.status==='approved').length;
+  $('statProperties').textContent=
+    approved.filter(isProperty).length;
+}
+
+function selectSection(section){
+  currentSection=section;
+  document.querySelectorAll('#menu button').forEach(btn=>{
+    btn.classList.toggle('selected',btn.dataset.section===section);
+  });
+  $('heading').textContent=titles[section];
+  $('overview').classList.toggle('hidden',section!=='overview');
+  $('module').classList.toggle('hidden',section==='overview');
+  renderSection();
+}
+
+$('menu').onclick=e=>{
+  const btn=e.target.closest('button[data-section]');
+  if(btn)selectSection(btn.dataset.section);
+};
+
+$('goApprovals').onclick=()=>selectSection('approvals');
+$('refreshAll').onclick=loadData;
+document.getElementById('overview').addEventListener('click',e=>{
+ const stat=e.target.closest('[data-dashboard]');
+ if(stat){selectSection(stat.dataset.dashboard);return;}
+ if(e.target.closest('#goInbox')){activeThread=null;selectSection('inbox');return;}
+ const recent=e.target.closest('[data-recent-thread]');
+ if(recent){selectSection('inbox');openThread(recent.dataset.recentThread);}
+});
+
+function renderSection(){
+  if(currentSection==='overview'){renderOverviewInbox();return;}
+  $('moduleTitle').textContent=titles[currentSection];
+  const descriptions={
+    approvals:'Aprove ou rejeite novos anúncios e alterações.',
+    manage:'Edite, pause, reative ou exclua anúncios publicados.',
+    properties:'Imóveis cadastrados na plataforma.',
+    partners:'Solicitações e cadastros de parceiros.',
+    inbox:'Converse com clientes identificados pelo Google e consulte o anúncio de interesse.',
+    team:'Cadastre administradores e configure o acesso individual. Somente o proprietário pode modificar a equipe.',
+    settings:'Configurações administrativas da plataforma.'
+  };
+  $('moduleDescription').textContent=descriptions[currentSection];
+  const target=$('moduleContent');
+
+   if(currentSection==='inbox'){renderInbox(target);
+   }else if(currentSection==='team'){renderTeam(target);
+   }else if(currentSection==='manage'){renderManage(target);
+   }else if(currentSection==='approvals'){
+    renderApprovals(target);
+  }else if(currentSection==='partners'){
+    renderList(target,records.stores,'stores',true);
+  }else if(currentSection==='properties'){
+    renderList(target,records.products.filter(isProperty),'products',true);
+  }else{
+    target.innerHTML='<p>Este módulo ainda não está ativo.</p>';
+  }
+}
+
+
+function canChat(){return currentUser?.uid===OWNER_UID || (currentUserPermissions?.chat===true)}
+let currentUserPermissions={};
+function startInbox(){
+ if(inboxUnsub)return;
+ inboxUnsub=onSnapshot(collection(db,'conversations'),snap=>{
+  inboxThreads=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.updatedAt?.seconds||b.createdAt?.seconds||0)-(a.updatedAt?.seconds||a.createdAt?.seconds||0));
+  syncOverviewMessages();
+  renderOverviewInbox();
+  if(currentSection==='inbox')renderSection();
+ },e=>notify('Erro ao receber atendimentos: '+e.message,true));
+}
+// Aguardando resposta = última mensagem enviada pelo cliente.
+// O cálculo é em tempo real e não altera documentos nem permissões do Firestore.
+function syncOverviewMessages(){
+ const recent=inboxThreads.slice(0,30);
+ const ids=new Set(recent.map(c=>c.id));
+ for(const [id,unsub] of overviewMessageUnsubs){
+  if(!ids.has(id)){unsub();overviewMessageUnsubs.delete(id);overviewLastMessages.delete(id)}
+ }
+ for(const c of recent){
+  if(overviewMessageUnsubs.has(c.id))continue;
+  const unsubscribe=onSnapshot(query(collection(db,'conversations',c.id,'messages'),orderBy('createdAt','desc'),limit(1)),snap=>{
+   const d=snap.docs[0];overviewLastMessages.set(c.id,d?d.data():null);renderOverviewInbox();if(currentSection==='inbox')paintInboxList();
+  },err=>{console.warn('Resumo da conversa:',err);overviewLastMessages.delete(c.id);renderOverviewInbox()});
+  overviewMessageUnsubs.set(c.id,unsubscribe);
+ }
+}
+function renderOverviewInbox(){
+ const container=document.getElementById('overviewRecent');
+ if(!container)return;
+ const counter=document.getElementById('statAwaiting');
+ if(!canChat()){
+  counter.textContent='—';container.innerHTML='<p class="muted">Acesso aos atendimentos disponível apenas à equipe autorizada.</p>';return;
+ }
+ const recent=inboxThreads.slice(0,30);
+ const awaiting=recent.filter(c=>overviewLastMessages.get(c.id)?.senderRole==='customer');
+ counter.textContent=String(awaiting.length);
+ const selected=[...awaiting,...recent.filter(c=>!awaiting.includes(c))].slice(0,5);
+ container.innerHTML=selected.length?selected.map(c=>{
+  const last=overviewLastMessages.get(c.id),pending=last?.senderRole==='customer';
+  return `<button type="button" class="overview-recent-row" data-recent-thread="${escapeHTML(c.id)}"><span class="overview-recent-avatar">${escapeHTML((c.customerName||'?').slice(0,1).toUpperCase())}</span><span class="overview-recent-main"><strong>${escapeHTML(c.customerName||'Interessado')}</strong><small>🏠 ${escapeHTML(c.productName||'Anúncio')}</small><span>${escapeHTML(last?.text||'Abrir conversa')}</span></span><span class="overview-recent-side"><small>${inboxDate(last?.createdAt||c.createdAt)}</small>${pending?'<span class="overview-awaiting">Aguardando</span>':''}<span aria-hidden="true">›</span></span></button>`;
+ }).join(''):'<p class="muted">Nenhum atendimento encontrado.</p>';
+}
+let inboxSearch='',inboxFilter='all';
+function inboxDate(v){try{const d=v?.toDate?.()||(v?.seconds?new Date(v.seconds*1000):null);return d?new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(d):''}catch{return ''}}
+function renderInbox(target){
+ if(!canChat()){target.innerHTML='<p>Você não tem permissão para acessar atendimentos.</p>';return;}
+ startInbox();
+ target.innerHTML=`<div class="inbox-shell ${activeThread?'thread-open':''}" id="inboxShell">
+ <div class="inbox-sidebar"><div class="inbox-toolbar"><h3>Caixa de entrada <span class="inbox-count">(${inboxThreads.length})</span></h3><input class="inbox-search" id="inboxSearch" placeholder="Buscar cliente ou anúncio" aria-label="Buscar atendimentos" value="${escapeHTML(inboxSearch)}"><div class="inbox-filters"><button data-inbox-filter="all" class="${inboxFilter==='all'?'active':''}">Todos</button><button data-inbox-filter="open" class="${inboxFilter==='open'?'active':''}">Em aberto</button></div></div><div class="inbox-list" id="inboxList"></div></div>
+ <div class="inbox-detail" id="threadArea"><div class="inbox-no-selection">💬<h3>Selecione uma conversa</h3><p>Escolha um cliente na lista para responder.</p></div></div></div>`;
+ const search=target.querySelector('#inboxSearch');search.oninput=()=>{inboxSearch=search.value;paintInboxList()};
+ target.querySelectorAll('[data-inbox-filter]').forEach(btn=>btn.onclick=()=>{inboxFilter=btn.dataset.inboxFilter;target.querySelectorAll('[data-inbox-filter]').forEach(x=>x.classList.toggle('active',x===btn));paintInboxList()});
+ paintInboxList();if(activeThread)showThread();
+}
+function paintInboxList(){
+ const list=document.getElementById('inboxList');if(!list)return;
+ const term=inboxSearch.toLocaleLowerCase('pt-BR').trim();
+ const visible=inboxThreads.filter(c=>(inboxFilter==='all'||c.status==='open')&&[c.customerName,c.customerEmail,c.phone,c.productName,c.city].some(x=>String(x||'').toLocaleLowerCase('pt-BR').includes(term))).sort((a,b)=>{const pending=x=>overviewLastMessages.get(x.id)?.senderRole==='customer'?1:0;if(pending(a)!==pending(b))return pending(b)-pending(a);const ts=x=>overviewLastMessages.get(x.id)?.createdAt?.seconds||x.createdAt?.seconds||0;return ts(b)-ts(a)});
+ list.innerHTML=visible.length?visible.map(c=>`<button type="button" class="inbox-contact ${overviewLastMessages.get(c.id)?.senderRole==='customer'?'waiting':''} ${activeThread===c.id?'active':''}" data-open-thread="${escapeHTML(c.id)}"><span class="inbox-avatar">${escapeHTML((c.customerName||'?').trim().slice(0,1).toUpperCase())}</span><span class="inbox-contact-info"><span class="inbox-contact-top"><strong>${escapeHTML(c.customerName||'Interessado')}</strong><small>${inboxDate(c.updatedAt||c.createdAt)}</small></span><span class="inbox-preview">🏠 ${escapeHTML(c.productName||'Anúncio')}</span><span class="inbox-last-preview">${escapeHTML(overviewLastMessages.get(c.id)?.text||((c.city||'')+' · '+(c.country||'')))}</span>${overviewLastMessages.get(c.id)?.senderRole==='customer'?'<span class="qb-wait-badge">● Aguardando resposta</span>':''}</span></button>`).join(''):'<div class="inbox-empty">Nenhum atendimento encontrado.</div>';
+ list.querySelectorAll('[data-open-thread]').forEach(btn=>btn.onclick=()=>openThread(btn.dataset.openThread));
+}
+function openThread(id){
+ if(activeThread===id&&threadUnsub){document.getElementById('inboxShell')?.classList.add('thread-open');showThread();return;}
+ activeThread=id;threadMessages=[];if(threadUnsub){threadUnsub();threadUnsub=null;}
+ document.getElementById('inboxShell')?.classList.add('thread-open');paintInboxList();showThread();
+ threadUnsub=onSnapshot(query(collection(db,'conversations',id,'messages'),orderBy('createdAt','asc')),snap=>{
+  threadMessages=snap.docs.map(d=>d.data());showThread();
+ },e=>notify('Falha ao carregar conversa: '+e.message,true));
+}
+function showThread(){
+ const area=document.getElementById('threadArea');if(!area||!activeThread)return;
+ const c=inboxThreads.find(x=>x.id===activeThread);if(!c)return;
+ const phone=String(c.phone||'').replace(/\D/g,'');
+ const wa=phone.length>=8?`<a href="https://wa.me/${phone}" target="_blank" rel="noopener noreferrer">WhatsApp ↗</a>`:'';
+ area.innerHTML=`<div class="inbox-detail-head"><button class="inbox-back" id="inboxBack">← Todas as conversas</button><strong>${escapeHTML(c.customerName||'Interessado')}</strong><p>${escapeHTML(c.customerEmail||'')} · ${escapeHTML(c.city||'')} / ${escapeHTML(c.country||'')}</p><div class="inbox-meta"><span>🏠 ${escapeHTML(c.productName||'Anúncio')}</span><span>📞 ${escapeHTML(c.phone||'Não informado')}</span>${wa}</div></div>
+ <div class="inbox-messages" id="inboxMessages" role="log" aria-label="Histórico de mensagens">${threadMessages.length?threadMessages.map(m=>`<div class="inbox-bubble ${m.senderRole==='staff'?'staff':''}"><div>${escapeHTML(m.text||'')}</div><small>${m.senderRole==='staff'?'Equipe':'Cliente'} · ${inboxDate(m.createdAt)}</small></div>`).join(''):'<div class="inbox-empty">Ainda não há mensagens nesta conversa.</div>'}</div>
+ <form class="inbox-compose" id="staffReply"><textarea name="message" maxlength="2000" required rows="2" placeholder="Escreva sua resposta..." aria-label="Sua resposta"></textarea><button type="submit" class="action">Enviar</button></form>`;
+ const back=area.querySelector('#inboxBack');back.onclick=()=>document.getElementById('inboxShell')?.classList.remove('thread-open');
+ const messages=area.querySelector('#inboxMessages');messages.scrollTop=messages.scrollHeight;
+ const form=area.querySelector('#staffReply');form.onsubmit=async e=>{
+  e.preventDefault();const field=form.elements.message,text=field.value.trim();if(!text)return;
+  const id=activeThread;const btn=form.querySelector('button');btn.disabled=true;
+  try{await addDoc(collection(db,'conversations',id,'messages'),{senderId:currentUser.uid,senderRole:'staff',text,createdAt:serverTimestamp()});field.value='';}
+  catch(err){notify('Não foi possível responder: '+err.message,true)}finally{btn.disabled=false}
+ };
+}
+async function renderTeam(target){
+  if(auth.currentUser?.uid!==OWNER_UID){target.innerHTML='<p>Somente o Superadministrador pode gerenciar a equipe.</p>';return;}
+  target.innerHTML=`<p>Você é o Superadministrador. Os outros administradores precisam primeiro entrar com Google no aplicativo, para obter um UID.</p>
+    <div class="card"><h3>Adicionar ou atualizar administrador</h3>
+      <label>UID da conta Google no Firebase<br><input id="teamUid" placeholder="UID do usuário" style="width:100%;padding:12px;margin:8px 0;color:#fff;background:#172d4a;border:1px solid #52698a;border-radius:8px"></label>
+      <label>Nome de identificação<br><input id="teamName" maxlength="100" placeholder="Nome do administrador" style="width:100%;padding:12px;margin:8px 0;color:#fff;background:#172d4a;border:1px solid #52698a;border-radius:8px"></label>
+      <div id="teamChecks">${Object.entries(PERMISSIONS).map(([k,v])=>`<label style="display:block;padding:7px"><input type="checkbox" value="${k}" checked> ${v}</label>`).join('')}</div>
+      <button class="action" id="teamSave">Salvar permissões</button></div>
+    <div id="teamMembers" class="items">Carregando equipe...</div>`;
+  $('teamSave').onclick=async()=>{
+    const uid=$('teamUid').value.trim(),name=$('teamName').value.trim();
+    if(!/^[A-Za-z0-9_-]{15,128}$/.test(uid)||uid===OWNER_UID){notify('Informe o UID válido de outro usuário.',true);return;}
+    const permissions={};document.querySelectorAll('#teamChecks input').forEach(x=>permissions[x.value]=x.checked);
+    if(!confirm('Confirmar permissões deste administrador?'))return;
+    try{await setDoc(doc(db,'users',uid),{role:'admin',active:true,displayName:name,permissions,updatedAt:serverTimestamp()},{merge:true});notify('Permissões salvas.');renderTeam(target)}catch(e){notify(e.message,true)}
+  };
+  try{
+    const snap=await getDocs(collection(db,'users'));
+    const admins=snap.docs.filter(d=>d.id===OWNER_UID||d.data().role==='admin');
+    $('teamMembers').innerHTML=admins.length?admins.map(d=>{
+      const u=d.data(),owner=d.id===OWNER_UID;
+      return `<div class="item"><b>${escapeHTML(u.displayName||u.name||u.email||d.id)}</b> ${owner?'👑 Proprietário':''}<p>UID: ${escapeHTML(d.id)}<br>Situação: ${owner?'Protegido':u.active===true?'Ativo':'Suspenso'}<br>Permissões: ${owner?'Todas':Object.entries(PERMISSIONS).filter(([k])=>u.permissions?.[k]===true).map(([,v])=>v).join(', ')||'Nenhuma'}</p>${owner?'':`<button class="secondary" data-edituid="${escapeHTML(d.id)}">Editar</button> <button class="danger" data-toggleuid="${escapeHTML(d.id)}">${u.active===true?'Suspender':'Reativar'}</button>`}</div>`
+    }).join(''):'<p>Nenhum administrador cadastrado.</p>';
+    $('teamMembers').onclick=async e=>{
+      const edit=e.target.closest('[data-edituid]'),toggle=e.target.closest('[data-toggleuid]');
+      if(edit){const d=admins.find(x=>x.id===edit.dataset.edituid);if(!d)return;$('teamUid').value=d.id;$('teamName').value=d.data().displayName||'';document.querySelectorAll('#teamChecks input').forEach(x=>x.checked=d.data().permissions?.[x.value]===true);window.scrollTo({top:0,behavior:'smooth'});}
+      if(toggle){const d=admins.find(x=>x.id===toggle.dataset.toggleuid);if(!d||!confirm('Confirmar alteração de acesso?'))return;try{await updateDoc(doc(db,'users',d.id),{active:d.data().active!==true,updatedAt:serverTimestamp()});notify('Acesso atualizado.');renderTeam(target)}catch(err){notify(err.message,true)}}
+    };
+  }catch(e){$('teamMembers').textContent='Erro ao carregar equipe: '+e.message;}
+}
+
+function renderApprovals(target){
+  const counts={
+    products:records.products.filter(x=>x.status==='pending').length,
+    revisions:records.revisions.filter(x=>x.status==='pending').length,
+    stores:records.stores.filter(x=>x.status==='pending').length
+  };
+  target.innerHTML=`
+    <div class="tabs">
+      <button data-tab="products" class="${approvalTab==='products'?'selected':''}">
+        📦 Anúncios (${counts.products})
+      </button>
+      <button data-tab="revisions" class="${approvalTab==='revisions'?'selected':''}">
+        ✏️ Alterações (${counts.revisions})
+      </button>
+      <button data-tab="stores" class="${approvalTab==='stores'?'selected':''}">
+        🤝 Parceiros (${counts.stores})
+      </button>
+    </div>
+    <div id="approvalItems"></div>
+  `;
+
+  target.querySelectorAll('[data-tab]').forEach(btn=>{
+    btn.onclick=()=>{
+      approvalTab=btn.dataset.tab;
+      renderSection();
+    };
+  });
+
+  const items=records[approvalTab].filter(x=>x.status==='pending');
+  renderList($('approvalItems'),items,approvalTab,true);
+}
+
+function field(label,value){
+  return '<p><strong>'+escapeHTML(label)+':</strong> '+
+    escapeHTML(value??'Não informado')+'</p>';
+}
+
+function recordHTML(item,type){
+  if(type==='stores'){
+    return `
+      <h3>${escapeHTML(item.name||'Parceiro sem nome')}</h3>
+      ${statusTag(item.status)}
+      ${field('Cidade',item.city)}
+      ${field('Categoria',item.category)}
+      ${field('Telefone',item.phone)}
+      ${field('Descrição',item.description)}
+      <small>ID: ${escapeHTML(item.id)}</small>
+    `;
+  }
+
+  if(type==='products'){
+    const store=records.stores.find(x=>x.id===item.storeId);
+    return `
+      <h3>${escapeHTML(item.name||'Anúncio sem nome')}</h3>
+      ${statusTag(item.status)}
+      ${field('Preço',money(item.price))}
+      ${field('Categoria',item.category)}
+      ${field('Descrição',item.description)}
+      ${field('Parceiro',store?.name||item.storeId)}
+      <small>ID: ${escapeHTML(item.id)}</small>
+    `;
+  }
+
+  const product=records.products.find(x=>x.id===item.productId);
+  const changes=item.changes||{};
+  const changeLabels={
+    name:'Nome',
+    description:'Descrição',
+    price:'Preço',
+    category:'Categoria',
+    imageUrls:'Imagens',currency:'Moeda',rentType:'Modalidade',dailyPrice:'Diária',monthlyPrice:'Mensal'
+  };
+
+  let changesHTML='';
+  for(const [key,value] of Object.entries(changes)){
+    const before=product?.[key];
+    const display=v=>Array.isArray(v)?v.join(', '):
+      typeof v==='object'?JSON.stringify(v):String(v??'Não informado');
+    changesHTML+=`
+      <p><strong>${escapeHTML(changeLabels[key]||key)}</strong></p>
+      <p class="muted">Atual: ${escapeHTML(display(before))}</p>
+      <p>Proposto: ${escapeHTML(display(value))}</p>
+    `;
+  }
+
+  return `
+    <h3>Alteração: ${escapeHTML(product?.name||item.productId)}</h3>
+    ${statusTag(item.status)}
+    ${changesHTML}
+    <small>Revisão: ${escapeHTML(item.id)}</small>
+  `;
+}
+
+function renderList(target,items,type,showActions){
+  if(!items.length){
+    target.innerHTML='<p>Nenhum registro encontrado nesta seção.</p>';
+    return;
+  }
+
+  target.innerHTML='<div class="items">'+items.map(item=>`
+    <article class="item">
+      ${recordHTML(item,type)}
+      ${showActions&&item.status==='pending'?`
+        <div class="actions">
+          <button class="success" data-action="approved"
+            data-type="${escapeHTML(type)}"
+            data-id="${escapeHTML(item.id)}">✓ Aprovar</button>
+          <button class="danger" data-action="rejected"
+            data-type="${escapeHTML(type)}"
+            data-id="${escapeHTML(item.id)}">✕ Rejeitar</button>
+        </div>
+      `:''}
+    </article>
+  `).join('')+'</div>';
+
+  target.querySelectorAll('button[data-action]').forEach(btn=>{
+    btn.onclick=()=>handleDecision(btn);
+  });
+}
+
+async function handleDecision(button){
+  const type=button.dataset.type;
+  const id=button.dataset.id;
+  const decision=button.dataset.action;
+
+  if(!['stores','products','revisions'].includes(type))return;
+  if(!['approved','rejected'].includes(decision))return;
+
+  const item=records[type].find(x=>x.id===id);
+  if(!item||item.status!=='pending'){
+    notify('Este registro já foi processado. Atualize os dados.',true);
+    return;
+  }
+
+  const action=decision==='approved'?'APROVAR':'REJEITAR';
+  if(!confirm('Deseja realmente '+action+' este registro?'))return;
+
+  button.disabled=true;
+  clearNotice();
+
+  try{
+    await checkAdmin();
+
+    if(type==='revisions'){
+      await processRevision(item,decision);
+    }else{
+      await runTransaction(db,async tx=>{
+        const ref=doc(db,type,id);
+        const snap=await tx.get(ref);
+        if(!snap.exists()||snap.data().status!=='pending'){
+          throw new Error('Registro não está mais pendente.');
+        }
+
+        if(type==='products'&&decision==='approved'){
+          const data=snap.data();
+          const storeRef=doc(db,'stores',data.storeId);
+          const storeSnap=await tx.get(storeRef);
+          if(!storeSnap.exists()||
+             storeSnap.data().status!=='approved'||
+             storeSnap.data().ownerId!==data.ownerId){
+            throw new Error('O parceiro responsável não está aprovado.');
+          }
+        }
+
+        tx.update(ref,{status:decision});
+      });
+    }
+
+    notify('Registro '+(decision==='approved'?'aprovado':'rejeitado')+' com sucesso!');
+    await loadData();
+  }catch(e){
+    console.error(e);
+    notify('Não foi possível concluir: '+e.message,true);
+    button.disabled=false;
+  }
+}
+
+async function processRevision(item,decision){
+  await runTransaction(db,async tx=>{
+    const revisionRef=doc(db,'product_revisions',item.id);
+    const revisionSnap=await tx.get(revisionRef);
+
+    if(!revisionSnap.exists()||
+       revisionSnap.data().status!=='pending'){
+      throw new Error('Esta alteração não está mais pendente.');
+    }
+
+    const revision=revisionSnap.data();
+
+    
+
+    const productRef=doc(db,'products',revision.productId);
+    const productSnap=await tx.get(productRef);
+
+    if(!productSnap.exists()){
+      throw new Error('O anúncio original não existe.');
+    }
+
+    const product=productSnap.data();
+
+    if(product.ownerId!==revision.ownerId){
+      throw new Error('O proprietário da revisão não corresponde ao anúncio.');
+    }
+
+    if(product.status!=='pending_review'){
+      throw new Error('O anúncio precisa estar aguardando nova aprovação.');
+    }
+
+    const storeRef=doc(db,'stores',product.storeId);
+    const storeSnap=await tx.get(storeRef);
+
+    if(!storeSnap.exists()||
+       storeSnap.data().status!=='approved'||
+       storeSnap.data().ownerId!==product.ownerId){
+      throw new Error('O parceiro responsável não está aprovado.');
+    }
+
+    const changes=revision.changes;
+
+    if(!changes||
+       typeof changes!=='object'||
+       Array.isArray(changes)){
+      throw new Error('Alterações inválidas.');
+    }
+
+    const allowed=['name','description','price','category','imageUrls','currency','rentType','dailyPrice','monthlyPrice'];
+    const keys=Object.keys(changes);
+
+    if(!keys.length||keys.some(k=>!allowed.includes(k))){
+      throw new Error('A revisão contém campos não permitidos.');
+    }
+
+    if('name' in changes&&
+       (typeof changes.name!=='string'||
+        !changes.name.trim()||
+        changes.name.length>160)){
+      throw new Error('Nome inválido.');
+    }
+
+    if('price' in changes&&
+       (typeof changes.price!=='number'||
+        !Number.isFinite(changes.price)||
+        changes.price<0)){
+      throw new Error('Preço inválido.');
+    }
+
+    for(const key of ['description','category']){
+      if(key in changes&&typeof changes[key]!=='string'){
+        throw new Error('Campo inválido: '+key);
+      }
+    }
+
+    if('imageUrls' in changes&&
+       (!Array.isArray(changes.imageUrls)||
+        changes.imageUrls.length>20||
+        changes.imageUrls.some(url=>typeof url!=='string'))){
+      throw new Error('Lista de imagens inválida.');
+    }
+
+    if('currency' in changes&&!['PYG','BRL','USD'].includes(changes.currency))throw Error('Moeda inválida.');
+    if('rentType' in changes&&!['daily','monthly','both'].includes(changes.rentType))throw Error('Modalidade inválida.');
+    for(const k of ['dailyPrice','monthlyPrice'])if(k in changes&&(!Number.isFinite(changes[k])||changes[k]<0))throw Error('Valor inválido.');
+    if(decision==='approved')tx.update(productRef,{...changes,status:'approved'});
+    tx.update(revisionRef,{status:decision});
+  });
+}
+
+let managingId=null,manageStatus='all',manageSearch='';
+function managePrice(p){return (p.currency||'PYG')+' '+Number(p.price||0).toLocaleString('pt-BR')}
+function renderManage(target){
+ const list=records.products.filter(p=>(manageStatus==='all'||p.status===manageStatus)&&[p.name,p.category,p.id].join(' ').toLowerCase().includes(manageSearch.toLowerCase()));
+ target.innerHTML=`<div class="manage-filter"><input id="manageSearch" class="field" placeholder="Buscar anúncio" value="${escapeHTML(manageSearch)}"><select id="manageStatus" class="field">${[['all','Todos'],['approved','Publicados'],['paused','Pausados'],['pending','Pendentes'],['rejected','Rejeitados']].map(([v,t])=>`<option value="${v}" ${manageStatus===v?'selected':''}>${t}</option>`).join('')}</select><button id="manageApply" class="secondary">Pesquisar</button></div><div id="manageEditor"></div><div class="items">${list.map(p=>`<div class="item"><h3>${escapeHTML(p.name)}</h3>${statusTag(p.status)}<p>${escapeHTML(managePrice(p))} · ${escapeHTML(p.category)}</p><div class="actions"><button class="action" data-medit="${escapeHTML(p.id)}">Editar</button>${p.status==='approved'?`<button class="secondary" data-mstatus="paused" data-mid="${escapeHTML(p.id)}">Pausar</button>`:''}${p.status==='paused'?`<button class="success" data-mstatus="approved" data-mid="${escapeHTML(p.id)}">Reativar</button>`:''}<button class="danger" data-mdelete="${escapeHTML(p.id)}">Excluir</button></div></div>`).join('')||'<p>Nenhum anúncio encontrado.</p>'}</div>`;
+ $('manageApply').onclick=()=>{manageSearch=$('manageSearch').value.trim();manageStatus=$('manageStatus').value;renderManage(target)};
+ target.querySelectorAll('[data-medit]').forEach(b=>b.onclick=()=>editManage(b.dataset.medit));
+ target.querySelectorAll('[data-mstatus]').forEach(b=>b.onclick=()=>setManageStatus(b.dataset.mid,b.dataset.mstatus));
+ target.querySelectorAll('[data-mdelete]').forEach(b=>b.onclick=()=>deleteManage(b.dataset.mdelete));
+}
+function editManage(id){
+ const p=records.products.find(x=>x.id===id);if(!p)return;
+ managingId=id;
+ const area=$('manageEditor');if(!area)return;
+ let photos=Array.isArray(p.imageUrls)?[...p.imageUrls]:[];
+ area.innerHTML=`<div class="edit-panel"><h3>Editar: ${escapeHTML(p.name)}</h3><form id="manageForm"><label>Título</label><input class="field" name="name" required maxlength="160" value="${escapeHTML(p.name)}"><label>Preço</label><input class="field" name="price" type="number" min="0" step="any" required value="${Number(p.price)||0}"><label>Moeda</label><select class="field" name="currency">${['PYG','BRL','USD'].map(c=>`<option ${c===(p.currency||'PYG')?'selected':''}>${c}</option>`).join('')}</select><label>Categoria</label><select class="field" name="category">${['Terrenos','Imóveis à venda','Aluguéis','Serviços','Restaurantes','Comércios'].map(c=>`<option ${c===p.category?'selected':''}>${c}</option>`).join('')}</select><label>Aluguel</label><select class="field" name="rentType">${[['daily','Diário'],['monthly','Mensal'],['both','Ambos']].map(([v,t])=>`<option value="${v}" ${v===(p.rentType||'monthly')?'selected':''}>${t}</option>`).join('')}</select><label>Preço da diária (se ambos)</label><input class="field" type="number" name="dailyPrice" min="0" step="any" value="${Number(p.dailyPrice)||0}"><label>Preço mensal (se ambos)</label><input class="field" type="number" name="monthlyPrice" min="0" step="any" value="${Number(p.monthlyPrice)||0}"><label>Descrição</label><textarea class="field" name="description" rows="4">${escapeHTML(p.description)}</textarea><label>Fotos atuais (toque em × para remover)</label><div class="photos" id="managePhotos"></div><label>Adicionar fotos</label><input class="field" type="file" name="newPhotos" accept="image/jpeg,image/png,image/webp" multiple><div class="actions"><button type="submit" class="success">Salvar alterações</button><button type="button" class="secondary" id="cancelManage">Cancelar</button></div></form></div>`;
+ const draw=()=>{const box=$('managePhotos');box.innerHTML=photos.map((url,i)=>`<div class="photo-wrap"><img src="${escapeHTML(url)}"><button type="button" data-photo="${i}">×</button></div>`).join('');box.querySelectorAll('[data-photo]').forEach(b=>b.onclick=()=>{photos.splice(Number(b.dataset.photo),1);draw()})};draw();
+ $('cancelManage').onclick=()=>area.innerHTML='';
+ $('manageForm').onsubmit=async e=>{
+ e.preventDefault();const f=e.target,button=f.querySelector('[type=submit]');button.disabled=true;
+ try{
+ await checkAdmin();const files=[...f.elements.newPhotos.files];if(files.length+photos.length>5)throw Error('Máximo de 5 fotos.');
+ const uploaded=[];
+ for(const file of files){if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5*1024*1024)throw Error('Foto inválida ou maior que 5 MB.');const data=new FormData();data.append('file',file,file.name);const token=await auth.currentUser.getIdToken(true);const res=await fetch('https://que-buscas-upload.canaldomafe.workers.dev/upload',{method:'POST',headers:{Authorization:'Bearer '+token},body:data});const result=await res.json();if(!res.ok||!result.ok||!result.url)throw Error(result.error||'Falha no upload');uploaded.push(result.url)}
+ const values={name:f.elements.name.value.trim(),price:Number(f.elements.price.value),currency:f.elements.currency.value,category:f.elements.category.value,description:f.elements.description.value.trim(),imageUrls:[...photos,...uploaded]};
+ if(!values.name||!Number.isFinite(values.price)||values.price<0)throw Error('Título ou preço inválido.');
+ if(values.category==='Aluguéis'){values.rentType=f.elements.rentType.value;if(values.rentType==='both'){values.dailyPrice=Number(f.elements.dailyPrice.value);values.monthlyPrice=Number(f.elements.monthlyPrice.value)}}
+ await updateDoc(doc(db,'products',id),values);managingId=null;await loadData();notify('Anúncio atualizado.');
+ }catch(err){notify('Falha: '+err.message,true)}finally{button.disabled=false}
+ };
+ area.scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function setManageStatus(id,status){if(!confirm(status==='paused'?'Pausar anúncio?':'Reativar anúncio?'))return;try{await checkAdmin();await updateDoc(doc(db,'products',id),{status});await loadData();notify('Situação atualizada.')}catch(e){notify(e.message,true)}}
+async function deleteManage(id){if(!confirm(adminLang==='es'?'¿Confirmas que deseas eliminar este anuncio? Esta acción no se puede deshacer.':adminLang==='en'?'Delete this listing permanently? This cannot be undone.':'Tem certeza de que deseja excluir este anúncio? Esta ação não poderá ser desfeita.'))return;try{await checkAdmin();await deleteDoc(doc(db,'products',id));records.products=records.products.filter(p=>p.id!==id);await loadData();notify('Anúncio excluído do Firestore. As fotos armazenadas não são apagadas automaticamente.')}catch(e){notify(e.message,true)}}
+</script>
+</body>
+</html>
